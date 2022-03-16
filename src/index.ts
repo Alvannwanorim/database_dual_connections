@@ -1,42 +1,73 @@
 import "reflect-metadata";
 import { createConnection, getConnection } from "typeorm";
-import { LastSyncTime } from "./entity/last_sync_time";
 import { User } from "./entity/User";
-const cron = require('node-cron');
+const cron = require("node-cron");
+
 const connectToDatabase = async () => {
-    try {
-        let connection = await createConnection('test');
-        console.log("connected to the database");
-        let connection1 = await createConnection('test1');
-        console.log("connected to the database test1");
-    } catch (err) {
-        console.log(err.message);
+  try {
+    let mysqlConnection = await createConnection("mysqldb");
+    if (mysqlConnection) console.log("connected to the mysql database");
+    let postgresConnection = await createConnection("postgresdb");
+    if (postgresConnection) console.log("connected to the postgres database");
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+connectToDatabase();
+
+const copyMockData = async () => {
+  try {
+    const mysqlConnection = await getConnection("mysqldb");
+    const postgresConnection = await getConnection("postgresdb");
+
+    const mysqlQueryResult = await mysqlConnection.query(
+      `SELECT * FROM mock_data`
+    );
+    for (let eachRow of mysqlQueryResult) {
+      const keyArray: string[] = Object.keys(eachRow);
+      const dataArray: string[] = Object.values(eachRow);
+
+      const tableKeys = keyArray.map((a) => JSON.stringify(a)).join(",");
+      const tableValues = dataArray
+        .map((a) =>
+          Number(a.toString().replace(/[-]/g, ""))
+            ? a
+            : `'${a.replace(/[']/, "")}'`
+        )
+        .join(",");
+      const rowExists = await postgresConnection.query(
+        `SELECT * FROM "user" WHERE "id" = ${eachRow.id}`
+      );
+      if (rowExists.length) {
+        postgresConnection.query(
+          `UPDATE "user"
+           SET "first_name" = '${eachRow.first_name}',
+           "last_name" = '${eachRow.last_name}',
+           "email"='${eachRow.email}',
+           "gender"='${eachRow.gender}',
+           "ip_address"='${eachRow.ip_address}'
+           WHERE "id" = ${eachRow.id}
+           `
+        );
+      } else {
+        postgresConnection.query(
+          `INSERT INTO "user"(${tableKeys}) VALUES(${tableValues})`
+        );
+      }
     }
-}
-connectToDatabase()
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
-const createLastSyncTime = async () => {
-    const lastSyncTimeRepository = getConnection("test1").getRepository(LastSyncTime)
+setTimeout(() => copyMockData(), 3000);
 
-    const last_sync_time = await lastSyncTimeRepository.find()
-}
-const createTestendPoint2 = async () => {
-    const userRepository = getConnection("test").getRepository(User)
-    const userRepository2 = getConnection("test1").getRepository(User)
+// function startSchedule() {
+//     cron.schedule('* * * * *', () => {
+//         console.log("testing!!!!!");
+//         createTestendPoint2()
 
-    const users = await userRepository.find()
-    for (let user of users) {
-        const createdUser = await userRepository2.save({ firstName: user.firstName, lastName: user.lastName, age: user.age })
-        console.log(createdUser);
-    }
-
-}
-
-function startSchedule() {
-    cron.schedule('* * * * *', () => {
-        console.log("testing!!!!!");
-        createTestendPoint2()
-
-    }, {});
-}
-startSchedule()
+//     }, {});
+// }
+// startSchedule()
