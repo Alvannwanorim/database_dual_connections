@@ -1,36 +1,39 @@
 import "reflect-metadata";
 import { createConnection, getConnection } from "typeorm";
+import { Dummy } from "./entity/dummy";
 import { LastSyncTime } from "./entity/last_sync_time";
+import { MockData } from "./entity/mock_data";
 import { User } from "./entity/User";
 const cron = require('node-cron');
 const connectToDatabase = async () => {
     try {
-        let connection = await createConnection('test');
-        console.log("connected to the database");
-        let connection1 = await createConnection('test1');
-        console.log("connected to the database test1");
+        let postgresConnection = await createConnection('postgres');
+        console.log("connected to the postgres database");
+        let mysqlConnection = await createConnection('mysql');
+        console.log("connected to the mySql database ");
     } catch (err) {
         console.log(err.message);
     }
 }
 connectToDatabase()
 
-const createLastSyncTime = async () => {
-    const lastSyncTimeRepository = getConnection("test1").getRepository(LastSyncTime)
 
-    const last_sync_time = await lastSyncTimeRepository.find()
-}
 const createTestendPoint2 = async () => {
-    const userRepository = getConnection("test").getRepository(User)
-    const userRepository2 = getConnection("test1").getRepository(User)
+    const userRepository = getConnection("mysql").getRepository(Dummy) //mock_data
+    // const userRepository2 = getConnection("postgres").getRepository(Dummy)
 
     const users = await userRepository.find()
-    for (let user of users) {
-        const createdUser = await userRepository2.save({ firstName: user.firstName, lastName: user.lastName, age: user.age })
-        console.log(createdUser);
-    }
+    console.log(users[1]);
+
+
+    // for (let user of users) {
+    //     const createdUser: MockData = await userRepository2.save({ ...user })
+    //     console.log(createdUser);
+    // }
 
 }
+
+// setTimeout(() => createTestendPoint2(), 3000)
 
 function startSchedule() {
     cron.schedule('* * * * *', () => {

@@ -1,12 +1,12 @@
 [
    {
-      "name": "test",
+      "name": "postgres",
       "type": "postgres",
       "host": "localhost",
       "port": 5432,
       "username": "postgres",
       "password": "alvan2327",
-      "database": "test",
+      "database": "users2",
       "synchronize": true,
       "logging": false,
       "entities": [
@@ -25,14 +25,14 @@
       }
    },
    {
-      "name": "test1",
+      "name": "mysql",
       "type": "mysql",
       "host": "localhost",
       "port": 3306,
       "username": "root",
       "password": "alvan2327",
-      "database": "test1",
-      "synchronize": true,
+      "database": "users",
+      "synchronize": false,
       "logging": false,
       "entities": [
          "src/entity/**/*.ts"
