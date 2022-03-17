@@ -32,7 +32,7 @@
       "username": "root",
       "password": "password",
       "database": "copytestmysql",
-      "synchronize": true,
+      "synchronize": false,
       "logging": false,
       "entities": [
          "src/entity/**/*.ts"
