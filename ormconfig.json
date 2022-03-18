@@ -1,13 +1,12 @@
 [
    {
-      "name": "postgresdb",
       "type": "postgres",
-      "host": "localhost",
+      "host": "35.234.120.31",
       "port": 5432,
-      "username": "postgres",
-      "password": "password",
-      "database": "copytestpostgres",
-      "synchronize": true,
+      "username": "chibeze",
+      "password": "8!fvq_gp",
+      "database": "recruitment-db",
+      "synchronize": false,
       "logging": false,
       "entities": [
          "src/entity/**/*.ts"
@@ -24,14 +23,15 @@
          "subscribersDir": "src/subscriber"
       }
    },
+
    {
-      "name": "mysqldb",
+      "name": "mysql",
       "type": "mysql",
       "host": "localhost",
       "port": 3306,
       "username": "root",
       "password": "password",
-      "database": "copytestmysql",
+      "database": "bg_prod",
       "synchronize": false,
       "logging": false,
       "entities": [

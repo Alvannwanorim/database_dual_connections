@@ -1,0 +1,113 @@
+CREATE TABLE "clearance_tgs" (
+    "ik_number" varchar(10) NOT NULL,
+    "staff_id" varchar(30) NOT NULL,
+    "msb_id" varchar(10) NOT NULL,
+    "clearance_staff_id" varchar(25) NOT NULL,
+    "clearance_field_size" varchar(5) NOT NULL,
+    "tg_lead_name" varchar(150) NOT NULL,
+    "tg_lead_unique_member_id" varchar(50) NOT NULL,
+    "face_rec_status" varchar(2) NOT NULL,
+    "scanned_receipt_flag" varchar(5) NOT NULL,
+    "scanned_receipt_code" varchar(20) NOT NULL,
+    "season" varchar(10) NOT NULL,
+    "crop" varchar(20) NOT NULL,
+    "mapping_field" varchar(100) NOT NULL,
+    "voucher_id" varchar(20) NOT NULL,
+    "bvn" varchar(20) NOT NULL,
+    "prepaid_card_details" varchar(100) NOT NULL,
+    "no_prepaid_flag" varchar(5) NOT NULL,
+    "template" text NOT NULL,
+    "IMEI" varchar(30) NOT NULL,
+    "latitude" text NOT NULL,
+    "longitude" text NOT NULL,
+    "edit_count" varchar(10) NOT NULL,
+    "clearance_date" varchar(20) NOT NULL,
+    "location_id" varchar(30) NOT NULL,
+    "app_version" varchar(5) NOT NULL,
+    "date_updated" datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    "location_pickup_id" varchar(20) NOT NULL,
+    PRIMARY KEY ("ik_number"),
+    KEY "location_id" ("location_id"),
+    KEY "date_updated" ("date_updated"),
+    KEY "msb_id" ("msb_id")
+  )
+
+
+  INSERT INTO "clearance_tgs" ("ik_number", "staff_id", "msb_id", "clearance_staff_id", "clearance_field_size", "tg_lead_name", "tg_lead_unique_member_id", "face_rec_status", "scanned_receipt_flag", "scanned_receipt_code", "season", "crop", "mapping_field", "voucher_id", "bvn", "prepaid_card_details", "no_prepaid_flag", "template", "IMEI", "latitude", "longitude", "edit_count", "clearance_date", "location_id", "app_version", "date_updated", "location_pickup_id") VALUES ('IK00000012', 'T-1000000000004756', '', 'T-1000000000004756', '4.0', 'Gideon  Lazarus  tanko', 'T004756_210430085312_m', '0', '2', '', 'Wet', 'Maize', '0', '100000992', '', '', '1', '', '350303065573663', '11.238184366666667', '8.176179433333335', '0', '2021-04-30 10:06:14', 'id_IK00003471', '2.2.0', '2021-06-10 16:20:41', '');
+
+
+CREATE TABLE `clearance_members` (
+  `unique_member_id` varchar(50) NOT NULL,
+  `ik_number` varchar(15) CHARACTER SET utf8mb4 NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `staff_id` varchar(20) NOT NULL,
+  `msb_id` varchar(10) NOT NULL,
+  `clearance_staff_id` varchar(25) NOT NULL,
+  `clearance_field_size` varchar(5) NOT NULL,
+  `IMEI` varchar(30) NOT NULL,
+  `latitude` text NOT NULL,
+  `longitude` text NOT NULL,
+  `location_id` varchar(20) NOT NULL,
+  `clearance_date` varchar(15) NOT NULL,
+  `app_version` varchar(10) NOT NULL,
+  `date_updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`unique_member_id`),
+  KEY `staff_id` (`staff_id`),
+  KEY `date_updated` (`date_updated`),
+  KEY `ik_number` (`ik_number`),
+  KEY `msb_id` (`msb_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+
+   // {
+   //    "name": "postgres",
+   //    "type": "postgres",
+   //    "host": "localhost",
+   //    "port": 5432,
+   //    "username": "postgres",
+   //    "password": "alvan2327",
+   //    "database": "Testing",
+   //    "synchronize": false,
+   //    "logging": false,
+   //    "entities": [
+   //       "src/entity/**/*.ts"
+   //    ],
+   //    "migrations": [
+   //       "src/migration/**/*.ts"
+   //    ],
+   //    "subscribers": [
+   //       "src/subscriber/**/*.ts"
+   //    ],
+   //    "cli": {
+   //       "entitiesDir": "src/entity",
+   //       "migrationsDir": "src/migration",
+   //       "subscribersDir": "src/subscriber"
+   //    }
+   // },
+
+      {
+      "type": "postgres",
+      "host": "localhost",
+      "port": 5432,
+      "username": "postgres",
+      "password": "password",
+      "database": "Testing",
+      "synchronize": false,
+      "logging": false,
+      "entities": [
+         "src/entity/**/*.ts"
+      ],
+      "migrations": [
+         "src/migration/**/*.ts"
+      ],
+      "subscribers": [
+         "src/subscriber/**/*.ts"
+      ],
+      "cli": {
+         "entitiesDir": "src/entity",
+         "migrationsDir": "src/migration",
+         "subscribersDir": "src/subscriber"
+      }
+   },
+
